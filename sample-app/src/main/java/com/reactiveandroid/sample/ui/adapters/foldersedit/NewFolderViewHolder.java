@@ -1,24 +1,24 @@
 package com.reactiveandroid.sample.ui.adapters.foldersedit;
 
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.reactiveandroid.sample.R;
 import com.reactiveandroid.sample.utils.AppUtils;
 
 public class NewFolderViewHolder extends RecyclerView.ViewHolder implements OpenCloseable {
 
-    private final FoldersEditAdapter adapter;
-    private final ImageButton leftButton;
-    private final TextView folderName;
-    private final ImageButton doneButton;
-    private final View focusHolder;
+    public final FoldersEditAdapter adapter;
+    public final ImageButton leftButton;
+    public final TextView folderName;
+    public final ImageButton doneButton;
+    public final View focusHolder;
 
     public NewFolderViewHolder(FoldersEditAdapter adapter, View itemView) {
         super(itemView);

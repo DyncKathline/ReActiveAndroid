@@ -1,7 +1,5 @@
 package com.reactiveandroid.sample.mvp.presenters;
 
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.reactiveandroid.query.Delete;
 import com.reactiveandroid.query.Select;
 import com.reactiveandroid.sample.mvp.models.Folder;
@@ -9,25 +7,27 @@ import com.reactiveandroid.sample.mvp.models.Note;
 import com.reactiveandroid.sample.mvp.models.NoteFolderRelation;
 import com.reactiveandroid.sample.mvp.views.AddToFoldersView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-@InjectViewState
-public class FolderSelectPresenter extends MvpPresenter<AddToFoldersView> {
+public class FolderSelectPresenter {
 
+    private AddToFoldersView view;
     private Long noteId;
     private Note note;
-    private List<Folder> allFolders;
-    private List<Folder> noteFolders;
+    private List<Folder> allFolders = new ArrayList<>();
+    private List<Folder> noteFolders = new ArrayList<>();
 
-    public FolderSelectPresenter(Long noteId) {
+    public FolderSelectPresenter(AddToFoldersView view, Long noteId) {
+        this.view = view;
         this.noteId = noteId;
+        onFirstViewAttach();
     }
 
-    @Override
     protected void onFirstViewAttach() {
         loadNote();
     }
@@ -86,11 +86,11 @@ public class FolderSelectPresenter extends MvpPresenter<AddToFoldersView> {
     }
 
     private void showFoldersList() {
-        getViewState().showFoldersList(allFolders, noteFolders);
+        view.showFoldersList(allFolders, noteFolders);
     }
 
     private void updateFoldersList() {
-        getViewState().updateFoldersList(noteFolders);
+        view.updateFoldersList(noteFolders);
     }
 
 }

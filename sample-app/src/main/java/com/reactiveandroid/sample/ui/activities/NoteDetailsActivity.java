@@ -8,9 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
+import androidx.appcompat.app.AppCompatActivity;
 import com.greenfrvr.hashtagview.HashtagView;
 import com.reactiveandroid.sample.R;
 import com.reactiveandroid.sample.mvp.models.Folder;
@@ -18,7 +16,7 @@ import com.reactiveandroid.sample.mvp.models.Note;
 import com.reactiveandroid.sample.mvp.presenters.NoteDetailsPresenter;
 import com.reactiveandroid.sample.mvp.views.NoteDetailsView;
 
-public class NoteDetailsActivity extends MvpAppCompatActivity implements NoteDetailsView {
+public class NoteDetailsActivity extends AppCompatActivity implements NoteDetailsView {
 
     private static final String KEY_NOTE_ID = "note_id";
 
@@ -32,14 +30,7 @@ public class NoteDetailsActivity extends MvpAppCompatActivity implements NoteDet
     private TextView noteText;
     private HashtagView noteFolders;
 
-    @InjectPresenter
     NoteDetailsPresenter presenter;
-
-    @ProvidePresenter
-    public NoteDetailsPresenter provideNoteDetailsPresenter() {
-        long noteId = getIntent().getLongExtra(KEY_NOTE_ID, NoteDetailsPresenter.NEW_NOTE_ID);
-        return new NoteDetailsPresenter(noteId);
-    }
 
 
     @Override
@@ -50,6 +41,9 @@ public class NoteDetailsActivity extends MvpAppCompatActivity implements NoteDet
         noteTitle = (TextView) findViewById(R.id.note_title);
         noteText = (TextView) findViewById(R.id.note_text);
         noteFolders = (HashtagView) findViewById(R.id.note_folders);
+
+        long noteId = getIntent().getLongExtra(KEY_NOTE_ID, NoteDetailsPresenter.NEW_NOTE_ID);
+        presenter = new NoteDetailsPresenter(this, noteId);
     }
 
     @Override
@@ -76,7 +70,7 @@ public class NoteDetailsActivity extends MvpAppCompatActivity implements NoteDet
 
     @Override
     public void showNoteInfo(Note note) {
-
+        Toast.makeText(this, note.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

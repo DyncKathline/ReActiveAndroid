@@ -1,8 +1,6 @@
 package com.reactiveandroid.sample.mvp.presenters;
 
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.reactiveandroid.query.Select;
 import com.reactiveandroid.sample.mvp.models.Note;
 import com.reactiveandroid.sample.mvp.models.NoteFolderRelation;
@@ -13,22 +11,20 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-@InjectViewState
-public class NoteDetailsPresenter extends MvpPresenter<NoteDetailsView> {
+public class NoteDetailsPresenter {
 
     public static final long NEW_NOTE_ID = -1L;
-
+    private NoteDetailsView view;
     private Long noteId;
     private Note note;
 
-    public NoteDetailsPresenter(Long noteId) {
+    public NoteDetailsPresenter(NoteDetailsView view, Long noteId) {
+        this.view = view;
         this.noteId = noteId;
+        onFirstViewAttach();
     }
 
-    @Override
     protected void onFirstViewAttach() {
-        super.onFirstViewAttach();
-
         if (noteId != NEW_NOTE_ID) {
             loadNote();
         }
@@ -42,12 +38,12 @@ public class NoteDetailsPresenter extends MvpPresenter<NoteDetailsView> {
         note.saveAsync()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(noteId -> getViewState().showNoteSavedMessage());
+                .subscribe(noteId -> view.showNoteSavedMessage());
     }
 
     public void onDeleteNoteClicked() {
         if (note == null) {
-            getViewState().closeScreen();
+            view.closeScreen();
             return;
         }
 
@@ -55,20 +51,20 @@ public class NoteDetailsPresenter extends MvpPresenter<NoteDetailsView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    getViewState().showNoteDeletedMessage();
-                    getViewState().closeScreen();
+                    view.showNoteDeletedMessage();
+                    view.closeScreen();
                 });
     }
 
     public void onShowNoteInfoClicked() {
-        getViewState().showNoteInfo(note);
+        view.showNoteInfo(note);
     }
 
     public void onOpenNoteFoldersScreenClicked() {
         if (note != null) {
-            getViewState().openNoteFoldersScreen(note.getId());
+            view.openNoteFoldersScreen(note.getId());
         } else {
-            getViewState().showFirstSaveNoteMessage();
+            view.showFirstSaveNoteMessage();
         }
     }
 
@@ -94,7 +90,7 @@ public class NoteDetailsPresenter extends MvpPresenter<NoteDetailsView> {
 
     private void onNotesLoaded(Note note) {
         this.note = note;
-        getViewState().showNoteDetails(note);
+        view.showNoteDetails(note);
     }
 
 }

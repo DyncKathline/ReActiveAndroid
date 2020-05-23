@@ -1,28 +1,28 @@
 package com.reactiveandroid.sample.ui.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.reactiveandroid.sample.R;
 import com.reactiveandroid.sample.mvp.models.Note;
+import com.reactiveandroid.sample.utils.TimeUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder> {
 
     public interface OnItemClickListener {
         void onNoteSelected(int position);
     }
-
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM d, yyyy H:mm");
 
     private LayoutInflater layoutInflater;
     private List<Note> notes;
@@ -52,7 +52,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         TextDrawable noteDrawable = TextDrawable.builder().buildRound(noteLetter, note.getColor());
         holder.noteDrawable.setImageDrawable(noteDrawable);
         holder.title.setText(note.getTitle());
-        holder.updatedTime.setText(DATE_FORMAT.format(note.getUpdatedAt()));
+        holder.updatedTime.setText(TimeUtils.getTime(note.getUpdatedAt().getTime(), TimeUtils.DEFAULT_DATE_FORMAT, TimeZone.getTimeZone("GMT+08")));
     }
 
     private void onNoteSelected(int position) {

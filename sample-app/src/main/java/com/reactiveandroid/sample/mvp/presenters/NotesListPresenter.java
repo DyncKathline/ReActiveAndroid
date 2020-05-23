@@ -1,9 +1,5 @@
 package com.reactiveandroid.sample.mvp.presenters;
 
-import android.util.Log;
-
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.reactiveandroid.ReActiveAndroid;
 import com.reactiveandroid.internal.notifications.OnModelChangedListener;
 import com.reactiveandroid.query.Delete;
@@ -17,13 +13,17 @@ import java.util.List;
 
 import io.reactivex.schedulers.Schedulers;
 
-@InjectViewState
-public class NotesListPresenter extends MvpPresenter<NotesListView> {
+public class NotesListPresenter {
 
+    private NotesListView view;
     private OnModelChangedListener<Note> onNoteChangedListener;
-    private List<Note> notes;
+    private List<Note> notes = new ArrayList<>();
 
-    @Override
+    public NotesListPresenter(NotesListView view) {
+        this.view = view;
+        onFirstViewAttach();
+    }
+    
     protected void onFirstViewAttach() {
         onNoteChangedListener = (updatedNote, action) -> {
 
@@ -43,7 +43,7 @@ public class NotesListPresenter extends MvpPresenter<NotesListView> {
             }
 
             updateNotesScreenState();
-            getViewState().updateNotesList(notes);
+            view.updateNotesList(notes);
         };
 
         ReActiveAndroid.registerForModelChanges(Note.class, onNoteChangedListener);
@@ -51,23 +51,21 @@ public class NotesListPresenter extends MvpPresenter<NotesListView> {
         loadNotes();
     }
 
-    @Override
     public void onDestroy() {
-        super.onDestroy();
         ReActiveAndroid.unregisterForModelStateChanges(Note.class, onNoteChangedListener);
     }
 
     public void onNewNoteButtonClicked() {
-        getViewState().openNoteDetailsScreen(Constants.NEW_NOTE_ID);
+        view.openNoteDetailsScreen(Constants.NEW_NOTE_ID);
     }
 
     public void onNoteSelected(int position) {
         Long noteId = notes.get(position).getId();
-        getViewState().openNoteDetailsScreen(noteId);
+        view.openNoteDetailsScreen(noteId);
     }
 
     public void onOpenFoldersEditScreenClicked() {
-        getViewState().openFoldersEditScreen();
+        view.openFoldersEditScreen();
     }
 
     public void onDeleteAllNotesClicked() {
@@ -77,7 +75,7 @@ public class NotesListPresenter extends MvpPresenter<NotesListView> {
 
         notes.clear();
         updateNotesScreenState();
-        getViewState().updateNotesList(notes);
+        view.updateNotesList(notes);
     }
 
     public void onSearchQuery(String query) {
@@ -88,9 +86,9 @@ public class NotesListPresenter extends MvpPresenter<NotesListView> {
                     searchResults.add(note);
                 }
             }
-            getViewState().updateNotesList(searchResults);
+            view.updateNotesList(searchResults);
         } else {
-            getViewState().updateNotesList(notes);
+            view.updateNotesList(notes);
         }
     }
 
@@ -113,16 +111,16 @@ public class NotesListPresenter extends MvpPresenter<NotesListView> {
     private void onNotesLoaded(List<Note> notes) {
         this.notes = notes;
         updateNotesScreenState();
-        getViewState().updateNotesList(notes);
+        view.updateNotesList(notes);
     }
 
     private void updateNotesScreenState() {
         if (notes.isEmpty()) {
-            getViewState().hideNotesList();
-            getViewState().showNotesNotFoundMessage();
+            view.hideNotesList();
+            view.showNotesNotFoundMessage();
         } else {
-            getViewState().hideNotesNotFoundMessage();
-            getViewState().showNotesList();
+            view.hideNotesNotFoundMessage();
+            view.showNotesList();
         }
     }
 

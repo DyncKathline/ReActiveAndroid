@@ -1,15 +1,14 @@
 package com.reactiveandroid.sample.ui.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.arellomobile.mvp.presenter.InjectPresenter;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.reactiveandroid.sample.R;
 import com.reactiveandroid.sample.mvp.models.Note;
 import com.reactiveandroid.sample.mvp.presenters.NotesListPresenter;
@@ -18,14 +17,13 @@ import com.reactiveandroid.sample.ui.adapters.NotesAdapter;
 
 import java.util.List;
 
-public class MainActivity extends MvpAppCompatActivity implements NotesListView {
+public class MainActivity extends AppCompatActivity implements NotesListView {
 
     private View notesNotFoundMessage;
     private FloatingActionButton newNoteButton;
     private RecyclerView notesList;
     private NotesAdapter notesAdapter;
 
-    @InjectPresenter
     NotesListPresenter presenter;
 
     @Override
@@ -39,14 +37,22 @@ public class MainActivity extends MvpAppCompatActivity implements NotesListView 
         newNoteButton.setOnClickListener(view -> presenter.onNewNoteButtonClicked());
 
         notesList = (RecyclerView) findViewById(R.id.notes_list);
+
         notesAdapter = new NotesAdapter(this);
         notesAdapter.setOnItemClickListener(position -> presenter.onNoteSelected(position));
         notesList.setAdapter(notesAdapter);
+
+        presenter = new NotesListPresenter(this);
     }
 
     @Override
     public void updateNotesList(List<Note> notes) {
-        notesAdapter.setNotes(notes);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                notesAdapter.setNotes(notes);
+            }
+        });
     }
 
     @Override

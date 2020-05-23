@@ -3,12 +3,11 @@ package com.reactiveandroid.sample.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.arellomobile.mvp.presenter.InjectPresenter;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import com.reactiveandroid.sample.R;
 import com.reactiveandroid.sample.mvp.models.Folder;
 import com.reactiveandroid.sample.mvp.presenters.FoldersEditPresenter;
@@ -18,7 +17,7 @@ import com.reactiveandroid.sample.ui.adapters.foldersedit.OnFolderChangedListene
 
 import java.util.List;
 
-public class FoldersEditActivity extends MvpAppCompatActivity implements FoldersEditView {
+public class FoldersEditActivity extends AppCompatActivity implements FoldersEditView {
 
     public static Intent buildIntent(Context context) {
         return new Intent(context, FoldersEditActivity.class);
@@ -27,7 +26,6 @@ public class FoldersEditActivity extends MvpAppCompatActivity implements Folders
     private RecyclerView foldersList;
     private FoldersEditAdapter foldersEditAdapter;
 
-    @InjectPresenter
     FoldersEditPresenter presenter;
 
     @Override
@@ -36,6 +34,7 @@ public class FoldersEditActivity extends MvpAppCompatActivity implements Folders
         setContentView(R.layout.activity_folders_edit);
 
         foldersList = (RecyclerView) findViewById(R.id.folders_list);
+
         foldersEditAdapter = new FoldersEditAdapter(this);
         foldersEditAdapter.setOnFolderChangedListener(new OnFolderChangedListener() {
             @Override
@@ -54,6 +53,8 @@ public class FoldersEditActivity extends MvpAppCompatActivity implements Folders
             }
         });
         foldersList.setAdapter(foldersEditAdapter);
+
+        presenter = new FoldersEditPresenter(this);
     }
 
     @Override

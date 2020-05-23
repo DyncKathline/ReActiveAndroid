@@ -1,24 +1,28 @@
 package com.reactiveandroid.sample.mvp.presenters;
 
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.reactiveandroid.query.Delete;
 import com.reactiveandroid.query.Select;
 import com.reactiveandroid.sample.mvp.models.Folder;
 import com.reactiveandroid.sample.mvp.models.Note;
 import com.reactiveandroid.sample.mvp.views.FoldersEditView;
+import com.reactiveandroid.sample.ui.activities.FoldersEditActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-@InjectViewState
-public class FoldersEditPresenter extends MvpPresenter<FoldersEditView> {
+public class FoldersEditPresenter {
 
-    private List<Folder> folders;
+    private FoldersEditView view;
+    private List<Folder> folders = new ArrayList<>();
 
-    @Override
+    public FoldersEditPresenter(FoldersEditView view) {
+        this.view = view;
+        onFirstViewAttach();
+    }
+
     protected void onFirstViewAttach() {
         loadFolders();
     }
@@ -28,7 +32,7 @@ public class FoldersEditPresenter extends MvpPresenter<FoldersEditView> {
 
         Folder newFolder = new Folder(folderName);
         folders.add(newFolder);
-        getViewState().updateFoldersList(folders);
+        view.updateFoldersList(folders);
         newFolder.saveAsync()
                 .subscribeOn(Schedulers.io())
                 .subscribe();
@@ -39,7 +43,7 @@ public class FoldersEditPresenter extends MvpPresenter<FoldersEditView> {
 
         Folder updatedFolder = folders.get(position);
         updatedFolder.setName(folderName);
-        getViewState().updateFoldersList(folders);
+        view.updateFoldersList(folders);
         updatedFolder.saveAsync()
                 .subscribeOn(Schedulers.io())
                 .subscribe();
@@ -49,7 +53,7 @@ public class FoldersEditPresenter extends MvpPresenter<FoldersEditView> {
         if (folders == null) return;
 
         Folder deletedFolder = folders.remove(position);
-        getViewState().updateFoldersList(folders);
+        view.updateFoldersList(folders);
         deletedFolder.deleteAsync()
                 .subscribeOn(Schedulers.io())
                 .subscribe();
@@ -62,13 +66,13 @@ public class FoldersEditPresenter extends MvpPresenter<FoldersEditView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(folders -> {
                     this.folders = folders;
-                    getViewState().updateFoldersList(folders);
+                    view.updateFoldersList(folders);
                 });
     }
 
     public void onDeleteAllFoldersClicked() {
         folders.clear();
-        getViewState().closeScreen();
+        view.closeScreen();
         Delete.from(Note.class).executeAsync()
                 .subscribeOn(Schedulers.io())
                 .subscribe();

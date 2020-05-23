@@ -3,11 +3,9 @@ package com.reactiveandroid.sample.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import com.reactiveandroid.sample.R;
 import com.reactiveandroid.sample.mvp.models.Folder;
 import com.reactiveandroid.sample.mvp.presenters.FolderSelectPresenter;
@@ -16,7 +14,7 @@ import com.reactiveandroid.sample.ui.adapters.FoldersSelectAdapter;
 
 import java.util.List;
 
-public class FolderSelectActivity extends MvpAppCompatActivity implements AddToFoldersView {
+public class FolderSelectActivity extends AppCompatActivity implements AddToFoldersView {
 
     private static final String KEY_NOTE_ID = "note_id";
 
@@ -29,14 +27,7 @@ public class FolderSelectActivity extends MvpAppCompatActivity implements AddToF
     private RecyclerView foldersList;
     private FoldersSelectAdapter foldersSelectAdapter;
 
-    @InjectPresenter
     FolderSelectPresenter presenter;
-
-    @ProvidePresenter
-    public FolderSelectPresenter provideFolderSelectPresenter() {
-        long noteId = getIntent().getLongExtra(KEY_NOTE_ID, -1);
-        return new FolderSelectPresenter(noteId);
-    }
 
 
     @Override
@@ -45,6 +36,8 @@ public class FolderSelectActivity extends MvpAppCompatActivity implements AddToF
         setContentView(R.layout.activity_folders_edit);
 
         foldersList = (RecyclerView) findViewById(R.id.folders_list);
+        long noteId = getIntent().getLongExtra(KEY_NOTE_ID, -1);
+        presenter = new FolderSelectPresenter(this, noteId);
     }
 
     @Override
