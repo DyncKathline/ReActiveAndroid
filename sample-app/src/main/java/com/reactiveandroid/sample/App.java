@@ -23,6 +23,7 @@ public class App extends Application {
 
         ReActiveAndroid.init(new ReActiveConfig.Builder(this)
                 .addDatabaseConfigs(appDatabaseConfig)
+                .setLog(true)
                 .build());
         Stetho.initializeWithDefaults(this);
     }

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.reactiveandroid.ActiveLog;
 import com.reactiveandroid.annotation.Column;
 import com.reactiveandroid.annotation.OneToMany;
 import com.reactiveandroid.annotation.PrimaryKey;
@@ -142,6 +143,7 @@ public class ModelAdapter<ModelClass> {
             setModelId(model, id);
             ModelChangeNotifier.get().notifyModelChanged(model, ChangeAction.INSERT);
         }
+        ActiveLog.insert(tableInfo.getTableName(), null, values);
         return id;
     }
 

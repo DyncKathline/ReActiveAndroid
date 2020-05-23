@@ -12,6 +12,7 @@ public class ReActiveConfig {
 
     public final Context context;
     public final Map<Class<?>, DatabaseConfig> databaseConfigMap;
+    protected static boolean isLog = false;
 
     private ReActiveConfig(Context context, Map<Class<?>, DatabaseConfig> databaseConfigMap) {
         this.context = context;
@@ -39,6 +40,10 @@ public class ReActiveConfig {
             return new ReActiveConfig(context, databaseConfigMap);
         }
 
+        public Builder setLog(boolean log) {
+            isLog = log;
+            return this;
+        }
     }
 
 }
