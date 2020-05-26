@@ -3,6 +3,7 @@ package com.reactiveandroid.sample.ui.adapters.foldersedit;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +17,7 @@ public class NewFolderViewHolder extends RecyclerView.ViewHolder implements Open
 
     public final FoldersEditAdapter adapter;
     public final ImageButton leftButton;
-    public final TextView folderName;
+    public final EditText folderName;
     public final ImageButton doneButton;
     public final View focusHolder;
 
@@ -65,10 +66,10 @@ public class NewFolderViewHolder extends RecyclerView.ViewHolder implements Open
 
     @Override
     public void close() {
-        focusHolder.requestFocus();
+        folderName.clearFocus();
         AppUtils.hideSoftKeyboard(folderName);
         doneButton.setVisibility(View.GONE);
-        folderName.setText(null);
+//        folderName.setText(null);
         leftButton.setAlpha(1f);
         leftButton.setImageResource(R.drawable.ic_add_grey_24dp);
         itemView.setBackgroundResource(0);

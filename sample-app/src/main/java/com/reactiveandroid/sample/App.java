@@ -2,7 +2,6 @@ package com.reactiveandroid.sample;
 
 import android.app.Application;
 
-import com.facebook.stetho.Stetho;
 import com.reactiveandroid.ReActiveAndroid;
 import com.reactiveandroid.ReActiveConfig;
 import com.reactiveandroid.internal.database.DatabaseConfig;
@@ -25,7 +24,6 @@ public class App extends Application {
                 .addDatabaseConfigs(appDatabaseConfig)
                 .setLog(true)
                 .build());
-        Stetho.initializeWithDefaults(this);
     }
 
 }
