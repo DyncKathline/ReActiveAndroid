@@ -9,7 +9,7 @@
     <string name="delete_all_folders">Delete all folders</string>
     <string name="folders">Folders</string>
     <string name="first_save_note">First save note</string>
-    <string name="note_is_saved">Note is saved</string>
+    <string name="note_is_saved">Note %d is saved</string>
     <string name="note_is_deleted">Note is deleted</string>
     <string name="enter_folder_name">Enter folder name</string>
     <string name="folder_name">Folder name</string>

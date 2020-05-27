@@ -6,7 +6,7 @@ public interface NoteDetailsView {
 
     void showNoteDetails(Note note);
     void showFirstSaveNoteMessage();
-    void showNoteSavedMessage();
+    void showNoteSavedMessage(Long noteId);
     void showNoteDeletedMessage();
     void showNoteInfo(Note note);
     void openNoteFoldersScreen(long noteId);

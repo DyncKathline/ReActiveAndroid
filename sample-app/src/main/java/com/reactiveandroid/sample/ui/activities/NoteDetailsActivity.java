@@ -59,8 +59,8 @@ public class NoteDetailsActivity extends AppCompatActivity implements NoteDetail
     }
 
     @Override
-    public void showNoteSavedMessage() {
-        Toast.makeText(this, R.string.note_is_saved, Toast.LENGTH_SHORT).show();
+    public void showNoteSavedMessage(Long noteId) {
+        Toast.makeText(this, String.format(getResources().getString(R.string.note_is_saved), noteId), Toast.LENGTH_SHORT).show();
     }
 
     @Override

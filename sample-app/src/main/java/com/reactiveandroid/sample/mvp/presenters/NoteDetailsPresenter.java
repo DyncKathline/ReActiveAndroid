@@ -38,7 +38,10 @@ public class NoteDetailsPresenter {
         note.saveAsync()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(noteId -> view.showNoteSavedMessage());
+                .subscribe(noteId -> {
+                    view.showNoteSavedMessage(noteId);
+                    view.closeScreen();
+                });
     }
 
     public void onDeleteNoteClicked() {

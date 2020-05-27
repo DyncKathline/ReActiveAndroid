@@ -26,6 +26,9 @@ public class Note extends Model {
     private Date createdAt;
     @Column(name = "updated_at")
     private Date updatedAt;
+    //这个可以用于版本测试
+//    @Column(name = "is_read")
+    private boolean isRead;
     private List<Folder> folders;
 
     //ReActiveAndroid requires empty constructor
@@ -68,6 +71,14 @@ public class Note extends Model {
 
     public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
     }
 
     public List<Folder> getFolders() {
