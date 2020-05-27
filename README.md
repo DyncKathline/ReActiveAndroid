@@ -250,6 +250,30 @@ public class App extends Application {
         }
 }
 ```
+如果你想使用 com.google.code.gson 来解析对象的话，需要使用如下配置才能解析成功
+```
+    ExclusionStrategy exclusionStrategy = new ExclusionStrategy() {
+
+        @Override
+        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+            return false;
+        }
+
+        @Override
+        public boolean shouldSkipClass(Class<?> clazz) {
+            return clazz == Field.class || clazz == Method.class;
+        }
+    };
+
+    Gson gson = new GsonBuilder()
+            .addSerializationExclusionStrategy(exclusionStrategy)
+            .addDeserializationExclusionStrategy(exclusionStrategy)
+            .create();
+
+    // Student is a simple class extends com.reactiveandroid.Model
+    Student student = gson.fromJson(json, Student.class);
+    student.save();
+```
 ## License
 
 ```
